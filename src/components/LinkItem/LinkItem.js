@@ -1,6 +1,7 @@
 import React from "react"
 import PropTypes from "prop-types"
 import { confirmAlert } from "react-confirm-alert"
+import { toast } from "react-toastify"
 
 import { LOCAL_STORAGE_OBJECT } from "../../scripts/constants"
 
@@ -42,6 +43,7 @@ const LinkItem = ({ data, getData }) => {
                     LOCAL_STORAGE_OBJECT,
                     JSON.stringify(links)
                   )
+                  toast.success("The link has been deleted successfully.")
                   getData()
                 }}
               >

@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react"
 
 import "./List.scss"
+import NoDataIcon from "../../assets/nodata.png"
 import SubmitLink from "../../components/SubmitLink/SubmitLink"
 import LinkItem from "../../components/LinkItem/LinkItem"
 import { LOCAL_STORAGE_OBJECT } from "../../scripts/constants"
@@ -63,6 +64,11 @@ const List = () => {
         listData.map((listItem) => (
           <LinkItem key={listItem.id} data={listItem} getData={fetchData} />
         ))}
+      {listData && listData.length === 0 && (
+        <div>
+          <img className="no-data-icon" src={NoDataIcon} alt="no data" />
+        </div>
+      )}
     </div>
   )
 }
