@@ -3,6 +3,7 @@ import { Link } from "react-router-dom"
 import { toast } from "react-toastify"
 
 import "./AddLink.scss"
+import { LOCAL_STORAGE_OBJECT } from "../../scripts/constants"
 
 class LinkItem {
   constructor(name, url) {
@@ -29,14 +30,14 @@ const AddLink = () => {
   }
 
   const addLink = (link) => {
-    let links = localStorage.getItem("links")
+    let links = localStorage.getItem(LOCAL_STORAGE_OBJECT)
     if (links) {
       links = JSON.parse(links)
       links.push(link)
-      localStorage.setItem("links", JSON.stringify(links))
+      localStorage.setItem(LOCAL_STORAGE_OBJECT, JSON.stringify(links))
     } else {
       links = [link]
-      localStorage.setItem("links", JSON.stringify(links))
+      localStorage.setItem(LOCAL_STORAGE_OBJECT, JSON.stringify(links))
     }
   }
 

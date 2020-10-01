@@ -12,3 +12,61 @@ body {
   width: 360px;
   margin: 40px auto 0;
 }
+
+.react-confirm-alert {
+  height: 200px;
+}
+
+.react-confirm-alert-overlay {
+  background: rgba(0, 0, 0, 0.75);
+}
+
+.react-confirm-alert-body {
+  padding: 0;
+  height: 100%;
+  background: rgb(216, 216, 216);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 30px;
+  border-radius: 0;
+
+  h1 {
+    background: black;
+    color: white;
+    font-size: 18px;
+    padding: 10px;
+  }
+
+  .react-confirm-alert-message {
+    text-align: center;
+
+    p:first-of-type {
+      color: rgb(90, 90, 90);
+      font-size: 18px;
+      margin-bottom: 0;
+    }
+
+    p:last-of-type {
+      font-size: 24px;
+      color: black;
+      font-weight: bold;
+      margin: 0;
+    }
+  }
+
+  .react-confirm-alert-button-group {
+    display: flex;
+    justify-content: space-around;
+
+    button {
+      text-transform: uppercase;
+      background: black;
+      font-weight: bold;
+      font-size: 20px;
+      color: white;
+      width: 120px;
+      border-radius: 19px;
+    }
+  }
+}

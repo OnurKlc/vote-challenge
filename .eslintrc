@@ -19,6 +19,7 @@
       "error", {
         "semi": false
       }
-    ]
+    ],
+    "no-underscore-dangle": "off"
   }
 }
