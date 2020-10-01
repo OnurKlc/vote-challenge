@@ -5,6 +5,8 @@ import {
   Route,
   Redirect,
 } from "react-router-dom"
+import { ToastContainer } from "react-toastify"
+import "react-toastify/dist/ReactToastify.css"
 
 import { AddLink, List } from "./pages/index"
 
@@ -30,6 +32,17 @@ function App() {
           </Switch>
         </div>
       </Router>
+      <ToastContainer
+        position="top-center"
+        autoClose={3000}
+        hideProgressBar
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+      />
     </div>
   )
 }

@@ -10,8 +10,8 @@ const List = () => {
       <SubmitLink />
       <hr />
       <div className="select-container ml-10">
-        <select className="select">
-          <option value="" disabled selected hidden>
+        <select className="select" defaultValue="placeholder">
+          <option value="placeholder" disabled hidden>
             Order by
           </option>
           <option value="most">Most Voted (Z &#8594; A)</option>
