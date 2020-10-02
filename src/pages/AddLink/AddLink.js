@@ -44,10 +44,10 @@ const AddLink = () => {
   const onAddClick = () => {
     const nameValue = linkName.current.value
     const urlValue = linkUrl.current.value
-    if (nameValue === "") {
+    if (nameValue.trim() === "") {
       toast.error("Name field is required!")
       setEmptyNameField(true)
-    } else if (urlValue === "" || !validateUrl(urlValue)) {
+    } else if (!validateUrl(urlValue)) {
       toast.error("Please enter a valid URL")
       setEmptyUrlField(true)
     } else {
@@ -60,7 +60,7 @@ const AddLink = () => {
   }
 
   const onInputChange = () => {
-    if (linkName.current.value !== "") {
+    if (linkName.current.value.trim() !== "") {
       setEmptyNameField(false)
     }
     if (linkUrl.current.value !== "") {
