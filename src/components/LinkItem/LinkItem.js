@@ -38,12 +38,12 @@ const LinkItem = ({ data, getData }) => {
                     localStorage.getItem(LOCAL_STORAGE_OBJECT)
                   )
                   const index = links.findIndex((link) => link.id === data.id)
+                  toast.success(`${links[index].name} removed.`)
                   links.splice(index, 1)
                   localStorage.setItem(
                     LOCAL_STORAGE_OBJECT,
                     JSON.stringify(links)
                   )
-                  toast.success("The link has been deleted successfully.")
                   getData()
                 }}
               >
