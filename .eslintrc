@@ -20,6 +20,8 @@
         "semi": false
       }
     ],
-    "no-underscore-dangle": "off"
-  }
+    "no-underscore-dangle": "off",
+    "react/jsx-props-no-spreading": "off"
+  },
+  "ignorePatterns": [ "src/assets/**", "serviceWorker.js", "setupTests.js" ]
 }

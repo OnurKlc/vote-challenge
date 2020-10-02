@@ -4,11 +4,17 @@ import "./List.scss"
 import NoDataIcon from "../../assets/nodata.png"
 import SubmitLink from "../../components/SubmitLink/SubmitLink"
 import LinkItem from "../../components/LinkItem/LinkItem"
-import { LOCAL_STORAGE_OBJECT } from "../../scripts/constants"
+import {
+  LOCAL_STORAGE_OBJECT,
+  ORDER_LIST_ASCENDING,
+  ORDER_LIST_DESCENDING,
+} from "../../scripts/constants"
+import Pagination from "../../components/Pagination/Pagination"
 
 const List = () => {
   const [listData, setListData] = useState()
-  const [order, setOrder] = useState("most")
+  const [order, setOrder] = useState("date")
+  const [activePage, setActivePage] = useState(1)
 
   const sortAscending = (data) => {
     data.sort((a, b) => parseFloat(b.voteCount) - parseFloat(a.voteCount))
@@ -20,22 +26,33 @@ const List = () => {
     setListData([...data])
   }
 
+  const sortByDate = (data) => {
+    data.sort((a, b) => parseFloat(b.timestamp) - parseFloat(a.timestamp))
+    setListData([...data])
+  }
+
   const fetchData = useCallback(() => {
     const _listData = JSON.parse(localStorage.getItem(LOCAL_STORAGE_OBJECT))
-    if (order === "most") {
+    if (order === ORDER_LIST_ASCENDING) {
       sortAscending(_listData)
-    } else {
+    } else if (order === ORDER_LIST_DESCENDING) {
       sortDescending(_listData)
+    } else {
+      sortByDate(_listData)
     }
   }, [order])
 
   const onSelectChange = (event) => {
-    if (event.target.value === "less") {
+    if (event.target.value === ORDER_LIST_DESCENDING) {
       sortDescending(listData)
-    } else {
+    } else if (event.target.value === ORDER_LIST_ASCENDING) {
       sortAscending(listData)
     }
     setOrder(event.target.value)
+  }
+
+  const paginationChange = (page) => {
+    setActivePage(page)
   }
 
   useEffect(() => {
@@ -52,22 +69,34 @@ const List = () => {
           defaultValue="placeholder"
           onChange={onSelectChange}
         >
-          <option value="placeholder" disabled hidden>
+          <option value="placeholder" disabled hidden selected>
             Order by
           </option>
-          <option value="most">Most Voted (Z &#8594; A)</option>
-          <option value="less">Less Voted (A &#8594; Z)</option>
+          <option value={ORDER_LIST_ASCENDING}>Most Voted (Z &#8594; A)</option>
+          <option value={ORDER_LIST_DESCENDING}>
+            Less Voted (A &#8594; Z)
+          </option>
         </select>
         <span>&#9660;</span>
       </div>
       {listData &&
-        listData.map((listItem) => (
-          <LinkItem key={listItem.id} data={listItem} getData={fetchData} />
-        ))}
+        listData.map(
+          (listItem, index) =>
+            index + 1 <= activePage * 5 &&
+            index + 1 > (activePage - 1) * 5 && (
+              <LinkItem key={listItem.id} data={listItem} getData={fetchData} />
+            )
+        )}
       {listData && listData.length === 0 && (
         <div>
           <img className="no-data-icon" src={NoDataIcon} alt="no data" />
         </div>
+      )}
+      {listData && listData.length > 5 && (
+        <Pagination
+          itemCount={listData.length}
+          paginationChange={paginationChange}
+        />
       )}
     </div>
   )
