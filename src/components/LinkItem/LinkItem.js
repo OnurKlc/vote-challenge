@@ -28,7 +28,7 @@ const LinkItem = ({ data, getData }) => {
             <h1>Remove Link</h1>
             <div className="react-confirm-alert-message">
               <p>Do you want to remove:</p>
-              <p>{data.name}</p>
+              <p style={{ wordBreak: "break-all" }}>{data.name}</p>
             </div>
             <div className="react-confirm-alert-button-group">
               <button

@@ -25,13 +25,13 @@ const data = (
   switch (action.type) {
     case "UP_VOTE":
       handleVote(action.payload, 1)
-      return [...state]
+      return state
     case "DOWN_VOTE":
       handleVote(action.payload, -1)
-      return [...state]
+      return state
     case "REMOVE_ITEM":
       handleRemoveItem(action.payload)
-      return [...state]
+      return state
     default:
       return state
   }

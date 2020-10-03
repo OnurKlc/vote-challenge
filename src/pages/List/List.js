@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 
 import "./List.scss"
 import NoDataIcon from "../../assets/nodata.png"
@@ -11,9 +11,12 @@ import {
   ORDER_LIST_DESCENDING,
 } from "../../scripts/constants"
 import Pagination from "../../components/Pagination/Pagination"
+import actions from "../../redux/actions"
 
 const List = () => {
   const activePage = useSelector((state) => state.activePage)
+
+  const dispatch = useDispatch()
 
   const [listData, setListData] = useState()
   const [order, setOrder] = useState("date")
@@ -77,6 +80,12 @@ const List = () => {
     fetchData()
   }, [fetchData])
 
+  useEffect(() => {
+    if (listData && listData.length < 6) {
+      dispatch(actions.pageChange(1))
+    }
+  }, [listData])
+
   return (
     <div id="listPage">
       <SubmitLink />
@@ -97,7 +106,7 @@ const List = () => {
         </select>
         <span>&#9660;</span>
       </div>
-      {listData && (
+      {listData && listData.length > 0 && (
         <div className="list-container">
           {listData.map(
             (listItem, index) =>
