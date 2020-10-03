@@ -88,7 +88,7 @@ const List = () => {
           onChange={onSelectChange}
         >
           <option value="placeholder" disabled hidden>
-            Order by
+            Order by Oldest on Top
           </option>
           <option value={ORDER_LIST_ASCENDING}>Most Voted (Z &#8594; A)</option>
           <option value={ORDER_LIST_DESCENDING}>

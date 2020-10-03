@@ -1,28 +1,21 @@
 import { combineReducers } from "redux"
 import { LOCAL_STORAGE_OBJECT } from "../scripts/constants"
 
-const handleUpVote = (_item, _state) => {
+const handleVote = (_item, vote) => {
+  const links = JSON.parse(localStorage.getItem(LOCAL_STORAGE_OBJECT))
   const item = { ..._item }
-  item.voteCount += 1
+  item.voteCount += vote
   item.voteDate = Date.now()
-  const index = _state.findIndex((link) => link.id === item.id)
-  _state.splice(index, 1, item)
-  localStorage.setItem(LOCAL_STORAGE_OBJECT, JSON.stringify(_state))
+  const index = links.findIndex((link) => link.id === item.id)
+  links.splice(index, 1, item)
+  localStorage.setItem(LOCAL_STORAGE_OBJECT, JSON.stringify(links))
 }
 
-const handleDownVote = (_item, _state) => {
-  const item = { ..._item }
-  item.voteCount -= 1
-  item.voteDate = Date.now()
-  const index = _state.findIndex((link) => link.id === item.id)
-  _state.splice(index, 1, item)
-  localStorage.setItem(LOCAL_STORAGE_OBJECT, JSON.stringify(_state))
-}
-
-const handleRemoveItem = (_item, _state) => {
-  const index = _state.findIndex((link) => link.id === _item.id)
-  _state.splice(index, 1)
-  localStorage.setItem(LOCAL_STORAGE_OBJECT, JSON.stringify(_state))
+const handleRemoveItem = (_item) => {
+  const links = JSON.parse(localStorage.getItem(LOCAL_STORAGE_OBJECT))
+  const index = links.findIndex((link) => link.id === _item.id)
+  links.splice(index, 1)
+  localStorage.setItem(LOCAL_STORAGE_OBJECT, JSON.stringify(links))
 }
 
 const data = (
@@ -31,13 +24,13 @@ const data = (
 ) => {
   switch (action.type) {
     case "UP_VOTE":
-      handleUpVote(action.payload, state)
+      handleVote(action.payload, 1)
       return [...state]
     case "DOWN_VOTE":
-      handleDownVote(action.payload, state)
+      handleVote(action.payload, -1)
       return [...state]
     case "REMOVE_ITEM":
-      handleRemoveItem(action.payload, state)
+      handleRemoveItem(action.payload)
       return [...state]
     default:
       return state
