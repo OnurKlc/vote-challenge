@@ -1,25 +1,21 @@
-const getData = () => {
-  return {
-    type: "GET_DATA",
-  }
-}
-
-const setData = (data) => {
-  return {
-    type: "SET_DATA",
-    payload: data,
-  }
-}
-
-const upVote = () => {
+const upVote = (item) => {
   return {
     type: "UP_VOTE",
+    payload: item,
   }
 }
 
-const downVote = () => {
+const downVote = (item) => {
   return {
     type: "DOWN_VOTE",
+    payload: item,
+  }
+}
+
+const removeItem = (item) => {
+  return {
+    type: "REMOVE_ITEM",
+    payload: item,
   }
 }
 
@@ -31,10 +27,9 @@ const pageChange = (page) => {
 }
 
 const actions = {
-  getData,
-  setData,
   upVote,
   downVote,
+  removeItem,
   pageChange,
 }
 

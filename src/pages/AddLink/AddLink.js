@@ -10,8 +10,9 @@ class LinkItem {
     this.name = name
     this.url = url
     this.id = Math.floor(Math.random() * 10 ** 15)
-    this.timestamp = Date.now()
+    this.createDate = Date.now()
     this.voteCount = 0
+    this.voteDate = 0
   }
 }
 

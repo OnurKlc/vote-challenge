@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 
 import "./List.scss"
-import { useSelector } from "react-redux"
 import NoDataIcon from "../../assets/nodata.png"
 import SubmitLink from "../../components/SubmitLink/SubmitLink"
 import LinkItem from "../../components/LinkItem/LinkItem"
@@ -13,25 +13,35 @@ import {
 import Pagination from "../../components/Pagination/Pagination"
 
 const List = () => {
+  const activePage = useSelector((state) => state.activePage)
+
   const [listData, setListData] = useState()
   const [order, setOrder] = useState("date")
   const [emptyData, setEmptyData] = useState()
 
-  const activePage = useSelector((state) => state.activePage)
-
-  const sortAscending = (data) => {
-    data.sort((a, b) => parseFloat(b.voteCount) - parseFloat(a.voteCount))
-    setListData([...data])
+  const sortAscending = (_data) => {
+    _data.sort((a, b) => {
+      if (parseFloat(b.voteCount) - parseFloat(a.voteCount) === 0) {
+        return parseFloat(b.voteDate) - parseFloat(a.voteDate)
+      }
+      return parseFloat(b.voteCount) - parseFloat(a.voteCount)
+    })
+    setListData([..._data])
   }
 
-  const sortDescending = (data) => {
-    data.sort((a, b) => parseFloat(a.voteCount) - parseFloat(b.voteCount))
-    setListData([...data])
+  const sortDescending = (_data) => {
+    _data.sort((a, b) => {
+      if (parseFloat(a.voteCount) - parseFloat(b.voteCount) === 0) {
+        return parseFloat(b.voteDate) - parseFloat(a.voteDate)
+      }
+      return parseFloat(a.voteCount) - parseFloat(b.voteCount)
+    })
+    setListData([..._data])
   }
 
-  const sortByDate = (data) => {
-    data.sort((a, b) => parseFloat(b.timestamp) - parseFloat(a.timestamp))
-    setListData([...data])
+  const sortByDate = (_data) => {
+    _data.sort((a, b) => parseFloat(b.createDate) - parseFloat(a.createDate))
+    setListData([..._data])
   }
 
   const fetchData = useCallback(() => {
@@ -87,14 +97,21 @@ const List = () => {
         </select>
         <span>&#9660;</span>
       </div>
-      {listData &&
-        listData.map(
-          (listItem, index) =>
-            index + 1 <= activePage * 5 &&
-            index + 1 > (activePage - 1) * 5 && (
-              <LinkItem key={listItem.id} data={listItem} getData={fetchData} />
-            )
-        )}
+      {listData && (
+        <div className="list-container">
+          {listData.map(
+            (listItem, index) =>
+              index + 1 <= activePage * 5 &&
+              index + 1 > (activePage - 1) * 5 && (
+                <LinkItem
+                  key={listItem.id}
+                  data={listItem}
+                  getData={fetchData}
+                />
+              )
+          )}
+        </div>
+      )}
       {emptyData && (
         <div>
           <img className="no-data-icon" src={NoDataIcon} alt="no data" />

@@ -2,19 +2,20 @@ import React from "react"
 import PropTypes from "prop-types"
 import { confirmAlert } from "react-confirm-alert"
 import { toast } from "react-toastify"
-
-import { LOCAL_STORAGE_OBJECT } from "../../scripts/constants"
+import { useDispatch } from "react-redux"
 
 import "./LinkItem.scss"
+import actions from "../../redux/actions"
 
 const LinkItem = ({ data, getData }) => {
-  const onVoteClick = (num) => {
-    const copyData = { ...data }
-    copyData.voteCount += num
-    const links = JSON.parse(localStorage.getItem(LOCAL_STORAGE_OBJECT))
-    const index = links.findIndex((link) => link.id === copyData.id)
-    links.splice(index, 1, copyData)
-    localStorage.setItem(LOCAL_STORAGE_OBJECT, JSON.stringify(links))
+  const dispatch = useDispatch()
+
+  const onVoteClick = (vote) => {
+    if (vote === "UP_VOTE") {
+      dispatch(actions.upVote(data))
+    } else if (vote === "DOWN_VOTE") {
+      dispatch(actions.downVote(data))
+    }
     getData()
   }
 
@@ -34,16 +35,8 @@ const LinkItem = ({ data, getData }) => {
                 type="button"
                 onClick={() => {
                   onClose()
-                  const links = JSON.parse(
-                    localStorage.getItem(LOCAL_STORAGE_OBJECT)
-                  )
-                  const index = links.findIndex((link) => link.id === data.id)
-                  toast.success(`${links[index].name} removed.`)
-                  links.splice(index, 1)
-                  localStorage.setItem(
-                    LOCAL_STORAGE_OBJECT,
-                    JSON.stringify(links)
-                  )
+                  dispatch(actions.removeItem(data))
+                  toast.success(`${data.name} removed.`)
                   getData()
                 }}
               >
@@ -65,13 +58,13 @@ const LinkItem = ({ data, getData }) => {
         <span>{data.voteCount}</span> <span>Points</span>
       </div>
       <div className="text-container">
-        <div>{data.name}</div>
-        <div>({data.url})</div>
+        <div title={data.name}>{data.name}</div>
+        <div title={data.url}>({data.url})</div>
         <div>
-          <button type="button" onClick={() => onVoteClick(1)}>
+          <button type="button" onClick={() => onVoteClick("UP_VOTE")}>
             &#8593; Up Vote
           </button>
-          <button type="button" onClick={() => onVoteClick(-1)}>
+          <button type="button" onClick={() => onVoteClick("DOWN_VOTE")}>
             &#8595; Down Vote
           </button>
         </div>
@@ -88,8 +81,9 @@ LinkItem.propTypes = {
     name: PropTypes.string,
     url: PropTypes.string,
     id: PropTypes.number,
-    timestamp: PropTypes.number,
+    createDate: PropTypes.number,
     voteCount: PropTypes.number,
+    voteDate: PropTypes.number,
   }).isRequired,
   getData: PropTypes.func.isRequired,
 }
