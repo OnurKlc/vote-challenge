@@ -9,6 +9,7 @@ import {
   LOCAL_STORAGE_OBJECT,
   ORDER_LIST_ASCENDING,
   ORDER_LIST_DESCENDING,
+  LINKS_PER_PAGE,
 } from "../../scripts/constants"
 import Pagination from "../../components/Pagination/Pagination"
 import actions from "../../redux/actions"
@@ -81,7 +82,7 @@ const List = () => {
   }, [fetchData])
 
   useEffect(() => {
-    if (listData && listData.length < 6) {
+    if (listData && listData.length < LINKS_PER_PAGE + 1) {
       dispatch(actions.pageChange(1))
     }
   }, [listData])
@@ -97,7 +98,7 @@ const List = () => {
           onChange={onSelectChange}
         >
           <option value="placeholder" disabled hidden>
-            Order by Oldest on Top
+            Order by Old to New
           </option>
           <option value={ORDER_LIST_ASCENDING}>Most Voted (Z &#8594; A)</option>
           <option value={ORDER_LIST_DESCENDING}>
@@ -110,8 +111,8 @@ const List = () => {
         <div className="list-container">
           {listData.map(
             (listItem, index) =>
-              index + 1 <= activePage * 5 &&
-              index + 1 > (activePage - 1) * 5 && (
+              index + 1 <= activePage * LINKS_PER_PAGE &&
+              index + 1 > (activePage - 1) * LINKS_PER_PAGE && (
                 <LinkItem
                   key={listItem.id}
                   data={listItem}
@@ -126,7 +127,7 @@ const List = () => {
           <img className="no-data-icon" src={NoDataIcon} alt="no data" />
         </div>
       )}
-      {listData && listData.length > 5 && (
+      {listData && listData.length > LINKS_PER_PAGE && (
         <Pagination itemCount={listData.length} />
       )}
     </div>

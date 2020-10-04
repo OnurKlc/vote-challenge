@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import PropTypes from "prop-types"
 
 import usePrevious from "../../scripts/usePrevious"
+import { LINKS_PER_PAGE } from "../../scripts/constants"
 import "./Pagination.scss"
 import Icon from "../../scripts/icon"
 import actions from "../../redux/actions"
@@ -30,7 +31,9 @@ const Pagination = ({ itemCount }) => {
   const prevItemCount = usePrevious(itemCount)
 
   useEffect(() => {
-    const _pageCount = Array.from(new Array(Math.ceil(itemCount / 5)))
+    const _pageCount = Array.from(
+      new Array(Math.ceil(itemCount / LINKS_PER_PAGE))
+    )
     if (prevItemCount > itemCount) {
       dispatch(actions.pageChange(_pageCount.length))
     }
